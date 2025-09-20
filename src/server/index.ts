@@ -3,6 +3,7 @@ import cors from "cors";
 import { routeAdapter } from "./adapters/routeAdapter";
 import { makeSignUpController } from "../factories/auth/makeSignUpController";
 import { makeSignInController } from "../factories/auth/makeSignInController";
+import { log, LogType } from "../application/libs/logger/logger";
 
 
 const app = express();
@@ -23,5 +24,5 @@ app.post("/sign-in", routeAdapter(makeSignInController()));
 
 // Inicia o servidor
 app.listen(PORT, () => {
-  console.log(`Servidor rodando em http://localhost:${PORT}`);
+  log(`Servidor rodando em http://localhost:${PORT}`, LogType.SUCCESS);
 });

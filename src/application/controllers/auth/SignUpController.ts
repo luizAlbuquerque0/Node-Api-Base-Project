@@ -3,6 +3,7 @@ import { z, ZodError } from "zod";
 import { SignUpUseCase } from "../../useCases/auth/SignUpUseCase";
 import { AccountAlreadyExists } from "../../errors/AccountAlreadyExists";
 import { IRequest } from "../../interfaces/IRequest";
+import { log, LogType } from "../../libs/logger/logger";
 
 const schema = z.object({
   name: z.string().min(2),
@@ -37,6 +38,13 @@ export class SignUpController implements IController {
           },
         };
       }
+
+      log(
+        error instanceof Error
+          ? `SignUpController unexpected error: ${error.stack ?? error.message}`
+          : `SignUpController unexpected error: ${String(error)}`,
+        LogType.ERROR
+      );
 
       throw error;
     }

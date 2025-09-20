@@ -5,6 +5,7 @@ import { InvalidCredetials } from "../../errors/InvalidCredetials";
 import { IRequest } from "../../interfaces/IRequest";
 import { EXP_TIME_IN_DAYS } from "../../config/contants";
 import { CreateRefreshtokenUseCase } from "../../useCases/auth/CreateRefreshToken";
+import { log, LogType } from "../../libs/logger/logger";
 
 const schema = z.object({
   email: z.string().email(),
@@ -57,6 +58,13 @@ export class SignInController implements IController {
           },
         };
       }
+
+      log(
+        error instanceof Error
+          ? `SignInController unexpected error: ${error.stack ?? error.message}`
+          : `SignInController unexpected error: ${String(error)}`,
+        LogType.ERROR
+      );
 
       throw error;
     }

@@ -3,7 +3,7 @@ name: Deploy to Developer
 on:
   push:
     branches:
-      - master   # dispara apenas quando der push na master
+      - main   # dispara apenas quando der push na master
 
 jobs:
   deploy:

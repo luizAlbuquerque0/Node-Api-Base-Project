@@ -14,8 +14,47 @@ model Account {
   email        String         @unique
   password     String?
   RefreshToken RefreshToken[]
+  workspace    Workspace?
 
   @@map("accounts")
+}
+
+model Workspace {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String
+  accountId String   @unique @db.Uuid
+  account   Account  @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  leads     Lead[]
+  
+
+  @@map("workspaces")
+}
+
+model Lead {
+  id               String     @id @default(uuid()) @db.Uuid
+  dtCadastro       DateTime?  @map("Dt_Cadastro")
+  nome             String?    @map("Nome")
+  email            String?    @map("E-mail")
+  telefone         String?    @map("Telefone")
+  estado           String?    @map("Estado")
+  dtEntradaGrupo   DateTime?  @map("Dt_Entrada_grupo")
+  dtSaidaGrupo     DateTime?  @map("Dt_Saida_grupo")
+  lightForms       String?    @map("LightForms")
+  dtCompraSv       DateTime?  @map("Dt_Compra_Sv")
+  dtCompraCroqui   DateTime?  @map("Dt_Compra_Croqui")
+  dtCompraHolding  DateTime?  @map("Dt_Compra_Holding")
+  utmSource        String?    @map("utm_source")
+  utmMedium        String?    @map("utm_medium")
+  utmCampaign      String?    @map("utm_campaign")
+  utmTerm          String?    @map("utm_term")
+  utmContent       String?    @map("utm_content")
+  score            Int?       @map("Score")
+
+  workspaceId String    @db.Uuid
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@unique([workspaceId, email])
+  @@map("leads")
 }
 
 model RefreshToken {
